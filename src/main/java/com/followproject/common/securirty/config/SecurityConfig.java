@@ -6,7 +6,9 @@ import com.followproject.common.securirty.jwt.JwtAuthenticationFilter;
 import com.followproject.common.securirty.jwt.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -47,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers("/admin/**").hasRole("ADMIN")
-            .antMatchers("/users/**","/follow/**","/stakings/**","/wallets/**").hasRole("USER")
+            .antMatchers("/users/**","/follow/**").hasRole("USER")
             .anyRequest().permitAll()
             .and()
             .addFilter(jwtAuthenticationFilter)

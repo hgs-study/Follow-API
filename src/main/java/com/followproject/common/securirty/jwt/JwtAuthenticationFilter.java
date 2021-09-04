@@ -107,7 +107,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             message = "비밀번호 유효기간이 만료 되었습니다. 관리자에게 문의하세요.";
         }
 
-
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, message);
     }
 }

@@ -1,7 +1,7 @@
 package com.followproject.common.securirty.jwt;
 
 public class JwtProperties {
-    public static final String SECRET_KEY = "hgs";
+    public static final String SECRET_KEY = "hgstudy";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String REQUEST_HEADER_NAME = "Authorization";
     public static final String RESPONSE_HEADER_NAME = "Token";

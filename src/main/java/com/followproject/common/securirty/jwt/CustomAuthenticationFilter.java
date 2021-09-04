@@ -35,6 +35,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        log.debug("ssssss");
         final Cookie accessTokenCookie = cookieUtil.getCookie(request, JwtProperties.ACCESS_TOKEN_NAME);
 //        final Cookie refreshJwtToken = cookieUtil.getCookie(request, JwtProperties.REFRESH_TOKEN_NAME);
         String accessToken = jwtTokenProvider.resolveToken(request);
@@ -43,17 +44,14 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         String jwt = null;
         String refreshJwt = null;
         String refreshUserKey = null;
-
-
+        log.debug("111 시작");
         try{
-
             if(accessTokenCookie != null && accessToken != null){
                 if(!accessTokenCookie.getValue().equals(accessToken)) {
                     log.debug("잘못된 토큰");
                     throw new IllegalAccessException("잘못된 토큰입니다.");
                 }
             }
-
 
             if(accessToken != null){
                 userKey = jwtTokenProvider.getUserKeyByToken(accessToken);
@@ -102,10 +100,9 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         }catch(ExpiredJwtException e){
 
         }
+        log.debug("3333 시작");
         filterChain.doFilter(request,response);
-
     }
-
 
     private boolean isValidJwt(String token) {
         return token != null && jwtTokenProvider.validateToken(token);

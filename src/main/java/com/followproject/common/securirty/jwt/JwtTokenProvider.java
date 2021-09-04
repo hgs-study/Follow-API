@@ -26,6 +26,7 @@ public class JwtTokenProvider {
 
     // JWT 토큰 생성
     public String createToken(String userKey, List<String> roles, long expireTime) {
+        log.debug("createToken 시작");
         Claims claims = Jwts.claims().setSubject(userKey); // JWT payload 에 저장되는 정보단위
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
@@ -40,6 +41,7 @@ public class JwtTokenProvider {
 
     // 토큰에서 회원 정보 추출
     public String getUserKeyByToken(String token) {
+        log.debug("getUserKeyByToken 시작");
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
@@ -49,7 +51,7 @@ public class JwtTokenProvider {
 
     // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값'
     public String resolveToken(HttpServletRequest request) {
-
+        log.debug("resolveToken 시작");
         String token = request.getHeader(JwtProperties.REQUEST_HEADER_NAME);
         if (StringUtils.hasText(token) && token.startsWith(JwtProperties.TOKEN_PREFIX)) {
             token = token.replace(JwtProperties.TOKEN_PREFIX,"");
@@ -61,6 +63,7 @@ public class JwtTokenProvider {
 
     // 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken) {
+        log.debug("validateToken 시작");
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey)

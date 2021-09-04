@@ -44,7 +44,6 @@ public class AccountController {
 
     @GetMapping("/users/{email}")
     public Response.Find findUser(@PathVariable String email){
-
         accountValidator.validate(email);
 
         return mapper.toDto(accountService.findByEmail(email));

@@ -37,6 +37,5 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
-
     }
 }
