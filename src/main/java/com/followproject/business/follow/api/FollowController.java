@@ -5,8 +5,12 @@ import com.followproject.business.account.service.AccountService;
 import com.followproject.business.follow.entity.Follow;
 import com.followproject.business.follow.form.FollowForm.*;
 import com.followproject.business.follow.service.FollowService;
+import com.followproject.common.response.dto.ResponseDto;
+import com.followproject.common.response.util.ApiResponse;
 import com.followproject.common.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,14 +26,15 @@ public class FollowController {
     private final AuthenticationUtil authenticationUtil;
 
     @PostMapping("/follows")
-    public void follow(@Valid @RequestBody Request.Add add){
+    public ResponseEntity<ResponseDto> follow(@Valid @RequestBody Request.Add add){
         final String authenticationEmail = authenticationUtil.getAuthenticationEmail();
         final Account fromAccount = accountService.findByEmail(authenticationEmail);
         final Account toAccount = accountService.findByEmail(add.getEmail());
 
         final Follow follow = new Follow(fromAccount, toAccount);
-
         followService.follow(follow);
+
+        return ApiResponse.success(HttpStatus.OK, "정상적으로 팔로우 되었습니다.");
     }
 
     @DeleteMapping("/follows")
