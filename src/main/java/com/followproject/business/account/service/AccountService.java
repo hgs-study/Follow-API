@@ -5,7 +5,9 @@ import com.followproject.business.account.respository.AccountRepository;
 import com.followproject.common.error.code.ErrorCode;
 import com.followproject.common.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +18,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AccountService {
+@Slf4j
+public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
+        return accountRepository.findByEmail(email)
+                                .orElseThrow(() -> new UsernameNotFoundException(ErrorCode.NOT_FOUND_USER.getMessage()));
+    }
 
     @Transactional
     public void join(Account account){

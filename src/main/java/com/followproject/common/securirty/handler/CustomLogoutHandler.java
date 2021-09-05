@@ -5,6 +5,7 @@ import com.followproject.common.securirty.cookie.CookieUtil;
 import com.followproject.common.securirty.jwt.JwtProperties;
 import com.followproject.common.securirty.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
@@ -37,5 +38,6 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
+
     }
 }

@@ -29,10 +29,11 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountService accountService;
-    private final RedisUtil redisUtil;
     private final CookieUtil cookieUtil;
+    private final RedisUtil redisUtil;
 
     private final String ACCESS_TOKEN_NAME = JwtProperties.ACCESS_TOKEN_NAME;
     private final String REFRESH_TOKEN_NAME = JwtProperties.REFRESH_TOKEN_NAME;
@@ -45,12 +46,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         super.setAuthenticationManager(authenticationManager);
     }
 
+
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-                                                HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            log.debug("==== attemptAuthentication start ====");
-            //"/login"시 1번째로 탐 / getInputStream() : post 형태로 오는 것을 받을 수 있음
+            //  "/login"시 1번째로 탐 /getInputStream() : post 형태로 오는 것을 받을 수 있음
             Request.Login creds = new ObjectMapper().readValue(request.getInputStream(), Request.Login.class);
 
             //UsernamePasswordAuthenticationToken 토큰 생성 후 AuthenticationManager에 인증작업 요청
@@ -61,18 +61,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             new ArrayList<>()
                     )
             );
-        }
-        catch (IOException e){
-            throw new BusinessException(ErrorCode.NOT_FOUND_USER);
+        }catch (IOException e){
+            throw new RuntimeException(e);
         }
     }
+
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        log.debug("==== successfulAuthentication start ====");
         final String email = ((Account)authResult.getPrincipal()).getEmail();
         final Account account = accountService.findByEmail(email);
 
@@ -91,11 +90,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //        response.addHeader("userId", account.getUserKey());
     }
 
+
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException exception) throws IOException, ServletException {
-        logger.debug("failed authentication while attempting to access ");
 
         String message = exception.getMessage();
 
@@ -106,6 +105,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         } else if(exception instanceof CredentialsExpiredException) {
             message = "비밀번호 유효기간이 만료 되었습니다. 관리자에게 문의하세요.";
         }
+
 
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, message);
     }

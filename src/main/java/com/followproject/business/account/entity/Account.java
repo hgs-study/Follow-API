@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -68,6 +69,11 @@ public class Account implements UserDetails {
     }
 
     public Account() {
+    }
+
+    public Account(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     @Builder

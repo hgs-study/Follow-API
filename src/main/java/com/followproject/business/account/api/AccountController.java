@@ -38,8 +38,8 @@ public class AccountController {
     @GetMapping("/users")
     public List<Response.Find> findAccounts(){
         return accountService.findAll().stream()
-                .map((entity) -> mapper.toDto(entity))
-                .collect(Collectors.toList());
+                                       .map((entity) -> mapper.toDto(entity))
+                                       .collect(Collectors.toList());
     }
 
     @GetMapping("/users/{email}")

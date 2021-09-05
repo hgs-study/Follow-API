@@ -14,7 +14,10 @@ public enum ErrorCode {
     //ACCOUNT
     NOT_FOUND_USER(400,"A004001","해당 계정을 찾을 수 없습니다."),
     INVALID_EMAIL_FORMAT(400,"A004002","이메일 형식으로 입력해주세요."),
-    EXIST_EMAIL(400,"A004003","이미 존재하는 이메일입니다.");
+    EXIST_EMAIL(400,"A004003","이미 존재하는 이메일입니다."),
+
+    //TOKEN
+    INVALID_TOKEN_FORMAT(400,"T004001","해당 토큰 형식이 잘못되었습니다.");
 
     private int status;
     private String code;
