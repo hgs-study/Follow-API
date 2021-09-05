@@ -18,7 +18,7 @@ public class FollowService {
     private final FollowQueryRepository followQueryRepository;
 
     @Transactional
-    public void save(Follow follow){
+    public void follow(Follow follow){
         followRepository.save(follow);
     }
 
@@ -26,8 +26,13 @@ public class FollowService {
         return followRepository.findAllByFromAccount(account);
     }
 
-    public Long findCount(Account account){
+    public Long findCountByFromAccount(Account account){
         return followQueryRepository.findCountByFromAccount(account);
+    }
+
+    @Transactional
+    public void unfollow(Account fromAccount, Account toAccount){
+        followQueryRepository.deleteByFromAccountAndToAccount(fromAccount,toAccount);
     }
 
 }

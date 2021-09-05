@@ -1,4 +1,4 @@
-package com.followproject.business.follow.entity;
+package com.followproject.business.block.entity;
 
 import com.followproject.business.account.entity.Account;
 import com.followproject.common.domain.BaseEntity;
@@ -10,10 +10,10 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Follow extends BaseEntity {
+public class Block extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "follow_id")
+    @Column(name = "block_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,7 +24,7 @@ public class Follow extends BaseEntity {
     @JoinColumn(name = "to_account_id")
     private Account toAccount;
 
-    public Follow(Account fromAccount, Account toAccount) {
+    public Block(Account fromAccount, Account toAccount) {
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
     }

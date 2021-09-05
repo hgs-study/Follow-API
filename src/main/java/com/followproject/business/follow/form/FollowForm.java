@@ -24,6 +24,19 @@ public class FollowForm {
                 this.email = email;
             }
         }
+
+        @Getter
+        @NoArgsConstructor
+        public static class Delete{
+            @NotBlank(message = "이메일을 입력해주세요.")
+            @Email(message = "이메일 형식대로 입력해주세요.")
+            private String email;
+
+            @Builder
+            public Delete(String email) {
+                this.email = email;
+            }
+        }
     }
 
     public static class Response{

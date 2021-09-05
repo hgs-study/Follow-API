@@ -18,4 +18,12 @@ public class FollowQueryRepository {
                         .where(follow.fromAccount.eq(account))
                         .fetchCount();
     }
+
+    public void deleteByFromAccountAndToAccount(Account fromAccount, Account toAccount){
+        jpaQueryFactory
+                .delete(follow)
+                .where(follow.fromAccount.eq(fromAccount)
+                .and(follow.toAccount.eq(toAccount)))
+                .execute();
+    }
 }

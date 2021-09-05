@@ -7,6 +7,7 @@ import com.followproject.business.follow.form.FollowForm.*;
 import com.followproject.business.follow.service.FollowService;
 import com.followproject.common.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,13 +22,22 @@ public class FollowController {
     private final AuthenticationUtil authenticationUtil;
 
     @PostMapping("/follows")
-    public void applyFollow(@Valid @RequestBody Request.Add add){
+    public void follow(@Valid @RequestBody Request.Add add){
         final String authenticationEmail = authenticationUtil.getAuthenticationEmail();
         final Account fromAccount = accountService.findByEmail(authenticationEmail);
         final Account toAccount = accountService.findByEmail(add.getEmail());
 
         final Follow follow = new Follow(fromAccount, toAccount);
-        followService.save(follow);
+        followService.follow(follow);
+    }
+
+    @DeleteMapping("/follows")
+    public void unfollow(@Valid @RequestBody Request.Delete delete){
+        final String authenticationEmail = authenticationUtil.getAuthenticationEmail();
+        final Account fromAccount = accountService.findByEmail(authenticationEmail);
+        final Account toAccount = accountService.findByEmail(delete.getEmail());
+
+        followService.unfollow(fromAccount, toAccount);
     }
 
 }

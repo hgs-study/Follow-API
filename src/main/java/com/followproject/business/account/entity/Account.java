@@ -68,7 +68,7 @@ public class Account implements UserDetails {
         return true;
     }
 
-    public Account() {
+    public Account(){
     }
 
     public Account(String email, String password) {

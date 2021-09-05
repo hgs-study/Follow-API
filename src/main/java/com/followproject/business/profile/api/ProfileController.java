@@ -4,7 +4,6 @@ import com.followproject.business.account.entity.Account;
 import com.followproject.business.account.service.AccountService;
 import com.followproject.business.follow.entity.Follow;
 import com.followproject.business.follow.service.FollowService;
-import com.followproject.business.profile.form.ProfileForm;
 import com.followproject.business.profile.form.ProfileForm.*;
 import com.followproject.common.validator.CommonValidator;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +32,7 @@ public class ProfileController {
                                                           .map(e -> e.getEmail())
                                                           .collect(Collectors.toList());
 
-        return new Response.Find(followService.findCount(account), toAccountEmails);
+        return new Response.Find(followService.findCountByFromAccount(account), toAccountEmails);
     }
 
 
