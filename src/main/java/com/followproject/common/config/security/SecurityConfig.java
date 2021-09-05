@@ -1,4 +1,4 @@
-package com.followproject.common.securirty.config;
+package com.followproject.common.config.security;
 
 import com.followproject.common.securirty.handler.CustomLogoutHandler;
 import com.followproject.common.securirty.jwt.CustomAuthenticationFilter;

@@ -24,7 +24,7 @@ public class AccountForm {
             private String password;
 
             @Builder
-            private Join(String email, String password) {
+            public Join(String email, String password) {
                 this.email = email;
                 this.password = password;
             }
@@ -48,7 +48,7 @@ public class AccountForm {
             private String password;
 
             @Builder
-            private Find(Long id, String email, String password) {
+            public Find(Long id, String email, String password) {
                 this.id = id;
                 this.email = email;
                 this.password = password;
