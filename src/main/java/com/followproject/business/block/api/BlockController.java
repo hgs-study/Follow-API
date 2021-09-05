@@ -5,6 +5,7 @@ import com.followproject.business.account.service.AccountService;
 import com.followproject.business.block.entity.Block;
 import com.followproject.business.block.form.BlockForm.*;
 import com.followproject.business.block.service.BlockService;
+import com.followproject.business.follow.service.FollowService;
 import com.followproject.common.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ public class BlockController {
     private final AuthenticationUtil authenticationUtil;
     private final AccountService accountService;
     private final BlockService blockService;
+    private final FollowService followService;
 
     @PostMapping("/blocks")
     public void block(@Valid @RequestBody Request.Add add){
@@ -27,6 +29,13 @@ public class BlockController {
         final Account toAccount = accountService.findByEmail(add.getEmail());
 
         final Block block = new Block(fromAccount, toAccount);
+
+        unfollowWhenFollow(fromAccount, toAccount);
         blockService.block(block);
+    }
+
+    private void unfollowWhenFollow(Account fromAccount, Account toAccount) {
+        if(followService.findByFromAccountAndToAccount(fromAccount, toAccount) != null)
+            followService.unfollow(fromAccount, toAccount);
     }
 }

@@ -28,6 +28,7 @@ public class FollowController {
         final Account toAccount = accountService.findByEmail(add.getEmail());
 
         final Follow follow = new Follow(fromAccount, toAccount);
+
         followService.follow(follow);
     }
 

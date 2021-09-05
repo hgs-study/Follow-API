@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface BlockRepository extends JpaRepository<Block,Long> {
 
-    Optional<Block> findByFromAccountAndToAccount(Account fromAccount, Account toAccount);
+    Block findByFromAccountAndToAccount(Account fromAccount, Account toAccount);
 }
