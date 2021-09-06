@@ -23,7 +23,8 @@ public enum ErrorCode {
     BLOCKED_PROFILE(403, "T004001" , "프로필을 조회할 수 없습니다."),
 
     //FOLLOW
-    NOT_FOUND_FOLLOW(404,"F004001","해당 팔로우를 찾을 수 없습니다.");
+    NOT_FOUND_FOLLOW(404,"F004001","해당 팔로우를 찾을 수 없습니다."),
+    EXIST_FOLLOW(400,"F004002","이미 팔로우 중입니다.");
 
     private int status;
     private String code;

@@ -39,28 +39,27 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
     }
 
-    @Cacheable(key ="email", value = "findAccount")
     public Account findByEmail(String email){
         return accountRepository.findByEmail(email)
                                 .orElseThrow(()-> new BusinessException(ErrorCode.NOT_FOUND_USER));
     }
 
-    @Cacheable( value = "findAccounts")
     public List<Account> findAll(){
         return accountRepository.findAll();
     }
 
-    @Cacheable(key ="useKey", value = "findAccount")
     public Account findByUserKey(String userKey) throws UsernameNotFoundException{
         return accountRepository.findByUserKey(userKey)
                                 .orElseThrow(()-> new BusinessException(ErrorCode.NOT_FOUND_USER));
     }
 
-    @Cacheable(key ="useKey", value = "findUserDetails")
     public UserDetails findUserDetailsByUserKey(String userKey) throws UsernameNotFoundException{
         return accountRepository.findByUserKey(userKey)
                                 .orElseThrow(()-> new BusinessException(ErrorCode.NOT_FOUND_USER));
     }
 
-
+    @Transactional
+    public void saveAll(List<Account> accounts){
+        accountRepository.saveAll(accounts);
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BlockService {
     private final BlockRepository blockRepository;
 
+    @Transactional
     public void block(Block block){
         blockRepository.save(block);
     }

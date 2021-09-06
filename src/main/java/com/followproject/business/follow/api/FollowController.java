@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Api(tags = "3. Follow")
 @RestController
@@ -52,6 +54,29 @@ public class FollowController {
         followService.unfollow(fromAccount, toAccount);
 
         return ApiResponse.success(HttpStatus.OK, "정상적으로 언팔로우 되었습니다.");
+    }
+
+    @ApiOperation(value="Bulk 팔로우" , notes = "특정 유저를 팔로우합니다.")
+    @PostMapping("/follows/bulk")
+    public ResponseEntity<ResponseDto> bulkFollow(@Valid @RequestBody Request.Add add){
+        final String authenticationEmail = authenticationUtil.getAuthenticationEmail();
+        final Account fromAccount = accountService.findByEmail(authenticationEmail);
+        List<Account> accounts = new ArrayList<>();
+        List<Follow> follows = new ArrayList<>();
+
+        for (int i = 0; i < 100_000; i++) {
+            final Account toAccount = new Account("hgstudy@naver.com"+i,"password1234!");
+            accounts.add(toAccount);
+        }
+        accountService.saveAll(accounts);
+
+        for (int i = 0; i < 100_000; i++) {
+            final Follow follow = new Follow(fromAccount, accounts.get(i));
+            follows.add(follow);
+        }
+        followService.saveAll(follows);
+
+        return ApiResponse.success(HttpStatus.OK, "정상적으로 팔로우 되었습니다.");
     }
 
 }

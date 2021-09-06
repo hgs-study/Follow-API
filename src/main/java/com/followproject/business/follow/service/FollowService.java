@@ -22,20 +22,22 @@ public class FollowService {
 
     @Transactional
     public void follow(Follow follow){
+        followRepository.findByFromAccountAndToAccount(follow.getFromAccount(), follow.getToAccount())
+                        .ifPresent(e ->{
+                            throw new BusinessException(ErrorCode.EXIST_FOLLOW);
+                        });
+
         followRepository.save(follow);
     }
 
-    @Cacheable(key = "#fromAccount", value = "findFollows")
     public List<Follow> findAllByFromAccount(Account account){
         return followRepository.findAllByFromAccount(account);
     }
 
-    @Cacheable(key = "#fromAccount", value = "findFollowCount")
     public Long findCountByFromAccount(Account account){
         return followQueryRepository.findCountByFromAccount(account);
     }
 
-    @Cacheable(key = "#fromAccountAndToAccount", value = "findFollow")
     public Follow findByFromAccountAndToAccount(Account fromAccount, Account toAccount){
         return followRepository.findByFromAccountAndToAccount(fromAccount, toAccount)
                                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_FOLLOW));
@@ -44,6 +46,11 @@ public class FollowService {
     @Transactional
     public void unfollow(Account fromAccount, Account toAccount){
         followQueryRepository.deleteByFromAccountAndToAccount(fromAccount,toAccount);
+    }
+
+    @Transactional
+    public void saveAll(List<Follow> follows){
+        followRepository.saveAll(follows);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.followproject.business.follow.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.followproject.business.account.entity.Account;
 import com.followproject.common.domain.BaseEntity;
 import lombok.Getter;
@@ -12,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Follow extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "follow_id")
     private Long id;
 
