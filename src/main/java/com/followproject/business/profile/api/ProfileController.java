@@ -6,10 +6,10 @@ import com.followproject.business.block.service.BlockService;
 import com.followproject.business.follow.entity.Follow;
 import com.followproject.business.follow.service.FollowService;
 import com.followproject.business.profile.form.ProfileForm.*;
-import com.followproject.common.error.code.ErrorCode;
-import com.followproject.common.error.exception.BusinessException;
 import com.followproject.common.util.AuthenticationUtil;
 import com.followproject.common.validator.CommonValidator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Api(tags = "2. Profile")
 @RestController
 @RequiredArgsConstructor
 public class ProfileController {
@@ -27,6 +28,7 @@ public class ProfileController {
     private final AuthenticationUtil authenticationUtil;
     private final CommonValidator commonValidator;
 
+    @ApiOperation(value="자신 프로필 조회" , notes = "자신 프로필을 조회합니다.")
     @GetMapping("/profiles")
     public Response.Find getProfile(){
         final String authenticationEmail = authenticationUtil.getAuthenticationEmail();
@@ -41,6 +43,7 @@ public class ProfileController {
         return new Response.Find(followService.findCountByFromAccount(fromAccount), toAccountEmails);
     }
 
+    @ApiOperation(value="유저 프로필 조회" , notes = "유저 프로필을 조회합니다.")
     @GetMapping("/profiles/{email}")
     public Response.Find getToAccountProfile(@PathVariable String email){
         commonValidator.validateEmail(email);

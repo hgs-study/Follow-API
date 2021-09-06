@@ -8,6 +8,8 @@ import com.followproject.business.follow.service.FollowService;
 import com.followproject.common.response.dto.ResponseDto;
 import com.followproject.common.response.util.ApiResponse;
 import com.followproject.common.util.AuthenticationUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Api(tags = "3. Follow")
 @RestController
 @RequiredArgsConstructor
 public class FollowController {
@@ -25,6 +28,7 @@ public class FollowController {
     private final AccountService accountService;
     private final AuthenticationUtil authenticationUtil;
 
+    @ApiOperation(value="팔로우" , notes = "특정 유저를 팔로우합니다.")
     @PostMapping("/follows")
     public ResponseEntity<ResponseDto> follow(@Valid @RequestBody Request.Add add){
         final String authenticationEmail = authenticationUtil.getAuthenticationEmail();
@@ -32,18 +36,22 @@ public class FollowController {
         final Account toAccount = accountService.findByEmail(add.getEmail());
 
         final Follow follow = new Follow(fromAccount, toAccount);
+
         followService.follow(follow);
 
         return ApiResponse.success(HttpStatus.OK, "정상적으로 팔로우 되었습니다.");
     }
 
+    @ApiOperation(value="언팔로우" , notes = "특정 유저를 언팔로우합니다.")
     @DeleteMapping("/follows")
-    public void unfollow(@Valid @RequestBody Request.Delete delete){
+    public ResponseEntity<ResponseDto> unfollow(@Valid @RequestBody Request.Delete delete){
         final String authenticationEmail = authenticationUtil.getAuthenticationEmail();
         final Account fromAccount = accountService.findByEmail(authenticationEmail);
         final Account toAccount = accountService.findByEmail(delete.getEmail());
 
         followService.unfollow(fromAccount, toAccount);
+
+        return ApiResponse.success(HttpStatus.OK, "정상적으로 언팔로우 되었습니다.");
     }
 
 }

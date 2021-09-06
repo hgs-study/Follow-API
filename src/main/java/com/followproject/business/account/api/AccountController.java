@@ -8,6 +8,8 @@ import com.followproject.business.account.util.AccountUtil;
 import com.followproject.business.account.validator.AccountValidator;
 import com.followproject.common.response.dto.ResponseDto;
 import com.followproject.common.response.util.ApiResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Api(tags = "1. Account")
 @RestController
 @RequiredArgsConstructor
 public class AccountController {
@@ -26,6 +29,7 @@ public class AccountController {
     private final AccountUtil accountUtil;
     private final AccountMapper mapper = Mappers.getMapper(AccountMapper.class);
 
+    @ApiOperation(value="회원가입" , notes = "유저 등록(회원가입)합니다.")
     @PostMapping("/join")
     public ResponseEntity<ResponseDto> join(@Valid @RequestBody Request.Join join) {
         final Account account = accountUtil.createJoinAccount(join);
@@ -35,6 +39,7 @@ public class AccountController {
 
     }
 
+    @ApiOperation(value="유저 목록 조회" , notes = "유저 목록을 조회합니다.")
     @GetMapping("/accounts")
     public List<Response.Find> findAccounts(){
         return accountService.findAll().stream()
@@ -42,6 +47,7 @@ public class AccountController {
                                        .collect(Collectors.toList());
     }
 
+    @ApiOperation(value="유저 상세 조회" , notes = "유저 상세 조회합니다.")
     @GetMapping("/accounts/{email}")
     public Response.Find findAccount(@PathVariable String email){
         accountValidator.validate(email);
