@@ -7,6 +7,7 @@ import com.followproject.business.follow.repository.FollowRepository;
 import com.followproject.common.error.code.ErrorCode;
 import com.followproject.common.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +25,17 @@ public class FollowService {
         followRepository.save(follow);
     }
 
+    @Cacheable(key = "#fromAccount", value = "findFollows")
     public List<Follow> findAllByFromAccount(Account account){
         return followRepository.findAllByFromAccount(account);
     }
 
+    @Cacheable(key = "#fromAccount", value = "findFollowCount")
     public Long findCountByFromAccount(Account account){
         return followQueryRepository.findCountByFromAccount(account);
     }
 
+    @Cacheable(key = "#fromAccountAndToAccount", value = "findFollow")
     public Follow findByFromAccountAndToAccount(Account fromAccount, Account toAccount){
         return followRepository.findByFromAccountAndToAccount(fromAccount, toAccount)
                                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_FOLLOW));

@@ -31,19 +31,19 @@ public class AccountController {
         final Account account = accountUtil.createJoinAccount(join);
         accountService.join(account);
 
-        return ApiResponse.success(HttpStatus.CREATED, "정상적으로 회원가입 되었습니다.");
+        return ApiResponse.success(HttpStatus.CREATED, join.getEmail()+" 정상적으로 회원가입 되었습니다.");
 
     }
 
-    @GetMapping("/users")
+    @GetMapping("/accounts")
     public List<Response.Find> findAccounts(){
         return accountService.findAll().stream()
                                        .map((entity) -> mapper.toDto(entity))
                                        .collect(Collectors.toList());
     }
 
-    @GetMapping("/users/{email}")
-    public Response.Find findUser(@PathVariable String email){
+    @GetMapping("/accounts/{email}")
+    public Response.Find findAccount(@PathVariable String email){
         accountValidator.validate(email);
 
         return mapper.toDto(accountService.findByEmail(email));

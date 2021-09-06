@@ -14,7 +14,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Component
 @Slf4j
 public class JwtTokenProvider {

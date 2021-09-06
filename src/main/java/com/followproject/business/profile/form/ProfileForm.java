@@ -15,12 +15,12 @@ public class ProfileForm {
         @NoArgsConstructor
         public static class Find{
             private Long followCount;
-            private List<String> follows;
+            private List<String> followEmails;
 
             @Builder
-            public Find(Long followCount, List<String> follows) {
+            public Find(Long followCount, List<String> followEmails) {
                 this.followCount = followCount;
-                this.follows = follows;
+                this.followEmails = followEmails;
             }
         }
     }
